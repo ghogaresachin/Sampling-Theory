@@ -1,0 +1,169 @@
+---
+title: "Sampling Theory"
+author: "Sachin"
+date: "29/01/2023"
+output: html_document
+---
+# Topic:Stratified Sampling 
+# Q1
+```{r}
+N=250;n=25
+N1=1:50
+N2=51:80
+N3=81:180
+N4=181:250
+s1=sample(N1,5);s1
+s2=sample(N2,3);s2
+s3=sample(N3,12);s3
+s4=sample(N4,5);s4
+S=c(s1,s2,s3,s4);S
+```
+# Q2
+```{r}
+N=5000;
+N1=1000;N2=1500;N3=2500
+n1=10;n2=15;n3=20
+nh=c(n1,n2,n3);nh
+Nh=c(N1,N2,N3);Nh
+s1=c(5,4,1,2,4,3,7,5,0,3)
+s2=c(11,9,13,9,4,5,5,14,8,9,11,7,10,14,7)
+s3=c(22,16,18,18,23,20,20,19,20,16,21,20,26,20,26,18,21,17,22,21)
+ybar=c(mean(s1),mean(s2),mean(s3));ybar
+wh=c(N1/N,N2/N,N3/N);wh
+est_pop_mean=sum(wh*ybar);est_pop_mean
+Sh2=c(var(s1),var(s2),var(s3));var
+est_var_ybar_st=sum((1/nh-1/Nh)*wh^2*Sh2)
+se_var_ybar_st=sqrt(est_var_ybar_st);se_var_ybar_st
+```
+# Q3
+```{r}
+N=64;
+Nh=c(16,48);Nh
+nh=c(5,15);nh
+N1=c(799,773,778,734,588,577,507,507,457,438,415,401,387,381,324,315)
+N2=c(314,298,296,258,256,243,238,237,235,235,216,208,201,192,180,179,172,172,163,162,161,159,153,144,138,138,138,138,136,132,130,126,121,120,119,118,118,116,116,113,113,110,110,108,106,104,101,100)
+N=c(N1,N2);N
+S=sample(N,20);S
+SE=sqrt(var(S));SE
+s1=sample(N1,5);s1
+s2=sample(N2,15);s2
+```
+# Topic: Allocations & Estimation of population parameters in stratified sampling
+# Q1.
+```{r}
+Nh=c(50000,35000,25000);Nh
+N=sum(Nh);N
+nh=c(2000,1500,1500);nh
+n=sum(nh);n
+ah=c(1050,790,450);ah
+a=sum(ah);a
+wh=Nh/N;wh
+p_hat=ah/nh;p_hat
+p_st_hat=sum(wh*p_hat);p_st_hat
+var_pst_hat_est=sum(wh^2*(Nh-nh)/Nh*(nh-1))*p_hat*(1-p_hat);var_pst_hat_est
+se_pst_hat_est=sqrt(var_pst_hat_est);se_pst_hat_est
+cbind(var_pst_hat_est,se_pst_hat_est)
+```
+# Q2
+```{r}
+Nh=c(18260,4315,2233,1057,567);Nh
+N=sum(Nh);N
+ybar_h=c(100,250,500,1760,2250);ybar_h
+n=600;n
+sh=c(80,200,600,1900,2500);sh
+wh=Nh/N;wh
+ybar_N=sum(wh*ybar_h);ybar_N
+sy2=(1/N-1)*((sum(Nh-1)*sh^2)+sum(Nh*(ybar_h-ybar_N)^2));sy2
+```
+# Topic:Estimation of population parameters using ratio and regression
+# Q1)
+```{r}
+N=100;N
+n=10;n
+X=c(1707,1373,1630,1373,1376,1452,1160,1511,1628,1492);X
+Y=c(2116,1685,2310,1775,1795,1972,1650,1888,1947,2007);Y
+xbar=1572;xbar
+Xbar=mean(X);Xbar
+Ybar=mean(Y);Ybar
+R=Ybar/Xbar;R
+Ybar_R=R*xbar;Ybar_R
+yt_hat=N*Ybar_R;yt_hat
+est_MSE_Ybar_R=(1/n-1/N)*(var(Y)+var(X)*R^2-2*R*cov(X,Y));est_MSE_Ybar_R
+est_MSE_yt_hat=N^2*est_MSE_Ybar_R;est_MSE_yt_hat
+est_SE_yt_hat=sqrt(est_MSE_yt_hat);est_SE_yt_hat
+```
+# Topic:Estimation of population parameters by ratio and regression method
+# Q1)
+```{r}
+rm(list = ls(all=T))
+X=c(39,43,21,64,57,47);X
+Y=c(65,78,52,82,92,89);Y
+xbar=52;xbar
+N=275;N
+n=length(X);n
+Ybar=mean(Y);Ybar
+Xbar=mean(X);Xbar
+R=Ybar/Xbar;R
+Ybar_R=R*xbar;Ybar_R
+betahat=cov(X,Y)/var(X);betahat
+Ybar_Reg=Ybar+betahat*(xbar-Xbar);Ybar_Reg
+est_MSE_Ybar_R=(1/n-1/N)*(var(Y)+R^2*var(X)-2*R*cov(X,Y));est_MSE_Ybar_R                
+est_SE_Ybar_R=sqrt(est_MSE_Ybar_R);est_SE_Ybar_R
+est_MSE_Ybar_Reg=(1/n-1/N)*(var(Y)+betahat^2*var(X)-2*betahat*cov(X,Y));est_MSE_Ybar_Reg
+est_SE_Ybar_Reg=sqrt(est_MSE_Ybar_Reg);est_SE_Ybar_Reg
+Efficiency=est_MSE_Ybar_R/est_MSE_Ybar_Reg;Efficiency
+```
+# Q2)
+```{r}
+rm(list = ls(all=T))
+N=200;N
+xtot=11600;xtot
+n=10;n
+Y=c(61,42,50,58,67,45,39,57,71,53);Y
+X=c(59,47,52,60,67,48,44,58,76,58);X
+xbar=11600/200;xbar
+Yt=543;Yt
+Ybar=Yt/10;Ybar
+Xt=569;Xt
+Xbar=Xt/10;Xbar
+R=Ybar/Xbar;R
+Ybar_R=R*xbar;Ybar_R
+betahat=cov(X,Y)/var(X);betahat
+Ybar_Reg=Ybar+betahat*(xbar-Xbar);Ybar_Reg
+est_MSE_Ybar_R=(1/n-1/N)*(var(Y)+R^2*var(X)-2*R*cov(X,Y));est_MSE_Ybar_R 
+est_SE_Ybar_R=sqrt(est_MSE_Ybar_R);est_SE_Ybar_R
+est_MSE_Ybar_Reg=(1/n-1/N)*(var(Y)+betahat^2*var(X)-2*betahat*cov(X,Y));est_MSE_Ybar_Reg
+est_SE_Ybar_Reg=sqrt(est_MSE_Ybar_Reg);est_SE_Ybar_Reg
+Efficiency=est_MSE_Ybar_R/est_MSE_Ybar_Reg;Efficiency
+```
+# Q3)
+```{r}
+rm(list = ls(all=T))
+f1=c(22,53,43,50,73,65,71,24,21,36,72,68,59,43,76);f1
+f2=c(18,47,29,47,62,71,75,49,72,43,49,64,72,35,58);f2
+f3=c(27,38,37,41,58,69,31,43,47,51,56,76,67,71,47);f3
+f4=c(28,29,47,51,47,59,21,75,72,39,69,57,78,40,34);f4
+m=4;m
+n=75;n
+N=300;N
+a=rbind(f1,f2,f3,f4);a
+Ybar_r=apply(a,2,mean);Ybar_r
+Ybar_bar=(1/n)*sum(Ybar_r);Ybar_bar
+Sr=apply(a,2,var);Sr
+Sb2=(1/(n-1))*sum((Ybar_r-Ybar_bar)^2);Sb2
+Sw2=mean(Sr);Sw2
+est_SE_Ybar_r=sqrt((1/n-1/N)*Sb2);est_SE_Ybar_r
+S2=N*(m-1)/(N*m-1)*Sw2+(m*(N-1)/(N*m-1))*Sb2;S2
+estimatedRE=S2/(m*Sb2);estimatedRE
+```
+# Topic:Random sampling and estimation of population parameters under PPS designs
+# Q1)
+```{r}
+N=10;N
+U=1:10;U
+X=c(3,1,11,6,4,8,3,7,4,3);X
+p=X/sum(X);p
+PPSWR=sample(X,3,replace=TRUE,prob = p);PPSWR
+PPSWOR=sample(X,3,replace = FALSE,prob = p);PPSWOR
+```
+
